@@ -17,6 +17,7 @@ public class Account {
     @Column(unique = true)
     private String userName;
     private String userPassword;
+    private String nickName;
 
     @Column(unique = true)
     private String email;
@@ -56,6 +57,14 @@ public class Account {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getEmail() {

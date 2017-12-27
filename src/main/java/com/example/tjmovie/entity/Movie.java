@@ -15,11 +15,14 @@ public class Movie {
 
     @Column(unique = true)
     private String movieName;
-    private String movieFormat;
     private String movieLanguage;
+    private String releaseTime;
     private String lastTimeMinute;
     private String genres;
     private String mpaaRate;
+    private double rate;
+    String coverAddress;
+    String briefIntroduction;
 
 
     public Movie(){
@@ -40,14 +43,6 @@ public class Movie {
 
     public void setMovieName(String movieName) {
         this.movieName = movieName;
-    }
-
-    public String getMovieFormat() {
-        return movieFormat;
-    }
-
-    public void setMovieFormat(String movieFormat) {
-        this.movieFormat = movieFormat;
     }
 
     public String getMovieLanguage() {
@@ -80,5 +75,37 @@ public class Movie {
 
     public void setMpaaRate(String mpaaRate) {
         mpaaRate = mpaaRate;
+    }
+
+    public String getReleaseTime() {
+        return releaseTime;
+    }
+
+    public void setReleaseTime(String releaseTime) {
+        this.releaseTime = releaseTime;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public String getCoverAddress() {
+        return coverAddress;
+    }
+
+    public void setCoverAddress(String coverAddress) {
+        this.coverAddress = coverAddress;
+    }
+
+    public String getBriefIntroduction() {
+        return briefIntroduction;
+    }
+
+    public void setBriefIntroduction(String briefIntroduction) {
+        this.briefIntroduction = briefIntroduction;
     }
 }

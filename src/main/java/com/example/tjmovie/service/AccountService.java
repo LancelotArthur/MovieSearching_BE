@@ -5,7 +5,7 @@ import com.example.tjmovie.util.ResJsonTemplate;
 
 public interface AccountService {
 
-    ResJsonTemplate register(String userName, String userPassword, String email);
+    ResJsonTemplate register(String userName, String userPassword, String email, String nickName);
 
     ResJsonTemplate login(String username, String userPassword);
 

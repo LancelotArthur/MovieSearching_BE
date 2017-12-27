@@ -31,8 +31,9 @@ public class AccountController {
     public ResJsonTemplate register(
             @RequestParam(value = "userName") String userName,
             @RequestParam(value = "userPassword") String userPassword,
-            @RequestParam(value = "email") String email) {
-        return accountService.register(userName, userPassword, email);
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "nickName") String nickName) {
+        return accountService.register(userName, userPassword, email, nickName);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

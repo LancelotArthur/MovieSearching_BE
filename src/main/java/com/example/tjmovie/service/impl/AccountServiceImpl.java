@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     private TokenManager tokenManager;
 
     @Override
-    public ResJsonTemplate register(String userName, String userPassword, String email){
+    public ResJsonTemplate register(String userName, String userPassword, String email, String nickName){
         if (accountRepository.findByUserName(userName) != null){
             return new ResJsonTemplate<>("400", "用户名已存在");
         }
@@ -49,6 +49,9 @@ public class AccountServiceImpl implements AccountService {
         account.setUserName(userName);
         account.setUserPassword(MD5Encryption.md5(userPassword));
         account.setEmail(email);
+        account.setNickName(nickName);
+        account.setCreateTime(new Date());
+        account.setUpdateTime(new Date());
         accountRepository.save(account);
         return new ResJsonTemplate<>("201", "注册成功");
     }

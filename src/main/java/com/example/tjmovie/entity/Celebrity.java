@@ -18,6 +18,9 @@ public class Celebrity {
     private String name;
     private String headImg;
     private String briefIntroduction;
+    private String gender;
+    private String birthday;
+    private String nation;
     private boolean isWriter;
     private boolean isDirector;
     private boolean isActor;
@@ -89,5 +92,29 @@ public class Celebrity {
 
     public void setProducer(boolean producer) {
         isProducer = producer;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
     }
 }
