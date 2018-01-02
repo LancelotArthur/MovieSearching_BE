@@ -6,10 +6,7 @@ import com.example.tjmovie.service.MovieService;
 import com.example.tjmovie.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @EnableAutoConfiguration
@@ -34,6 +31,11 @@ public class MovieController {
     @RequestMapping(value = "/celebrity/{cbId}")
     public ResJsonTemplate getCelebrity(@PathVariable String cbId){
         return celebrityService.findCelebrity(cbId);
+    }
+
+    @RequestMapping(value = "/explore", method = RequestMethod.GET)
+    public ResJsonTemplate exploreMovie(@RequestParam String tag){
+        return movieService.searchMovieByGenre(tag);
     }
 
 }

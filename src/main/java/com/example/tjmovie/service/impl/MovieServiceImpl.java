@@ -91,4 +91,20 @@ public class MovieServiceImpl implements MovieService {
         return new ResJsonTemplate<>("200", reviews);
     }
 
+    @Override
+    public ResJsonTemplate searchMovieByKeyword(String keyword){
+        return new ResJsonTemplate<>("200", "TBD");
+    }
+
+    @Override
+    public ResJsonTemplate searchMovieByGenre(String genre){
+        List<Movie> movies = movieRepository.findMoviesByGenres(genre);
+        return new ResJsonTemplate<>("200", movies);
+    }
+
+    @Override
+    public ResJsonTemplate searchMovieByYear(int startYear, int endYear){
+        return new ResJsonTemplate<>("200", "TBD");
+    }
+
 }
