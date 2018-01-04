@@ -3,6 +3,7 @@ package com.example.tjmovie.service.impl;
 import com.example.tjmovie.entity.*;
 import com.example.tjmovie.repository.*;
 import com.example.tjmovie.service.MovieService;
+import com.example.tjmovie.util.ListSort;
 import com.example.tjmovie.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    private ListSort<Movie> movieListSort = new ListSort<>();
 
     @Override
     public ResJsonTemplate findMovie(String movieId){
@@ -91,7 +94,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public ResJsonTemplate searchMovieByKeyword(String keyword){
+    public ResJsonTemplate searchMovieByKeyword(String keyword, String sort){
         List<List<Movie>> movieLists = new ArrayList<>();
         for(int i = 0; i < keyword.length(); ++i)
         {
@@ -130,17 +133,19 @@ public class MovieServiceImpl implements MovieService {
                 break;
             }
         }
+        movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByGenre(String genre){
+    public ResJsonTemplate searchMovieByGenre(String genre, String sort){
         List<Movie> movies = movieRepository.findMoviesByGenres(genre);
+        movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByYear(String tag){
+    public ResJsonTemplate searchMovieByYear(String tag, String sort){
         int startYear = Integer.parseInt(tag.split("-")[0]);
         int endYear = Integer.parseInt(tag.split("-")[1]);
         List<Movie> movies = new ArrayList<>();
@@ -149,6 +154,35 @@ public class MovieServiceImpl implements MovieService {
                 movies.addAll(movieRepository.findMoviesByReleaseTime(String.valueOf(i)));
             }
         }
+        /*
+        Collections.sort(movies, new Comparator<Movie>(){
+            public int compare(Movie m1, Movie m2){
+                return m2.getRate() - m1.getRate() > 0 ? 1 : m2.getRate() - m1.getRate() == 0 ? 0 : -1;
+            }
+        });*/
+        movieListSort.sort(movies, "get" + sort, "desc");
+        return new ResJsonTemplate<>("200", movies);
+    }
+
+    @Override
+    public ResJsonTemplate searchMovieByMonth(String tag, String sort){
+        String year = tag.split("-")[0];
+        int startMonth = Integer.parseInt(tag.split("-")[1]);
+        int endMonth = Integer.parseInt(tag.split("-")[2]);
+        List<Movie> movies = new ArrayList<>();
+        if (startMonth <= endMonth) {
+            for (int i = startMonth; i <= endMonth; ++i){
+                movies.addAll(movieRepository.findMoviesByReleaseTime(year + "-" + String.valueOf(i)));
+            }
+        }
+        movieListSort.sort(movies, "get" + sort, "desc");
+        return new ResJsonTemplate<>("200", movies);
+    }
+
+    @Override
+    public ResJsonTemplate searchMovieByLanguage(String tag, String sort){
+        List<Movie> movies = movieRepository.findMoviesByMovieLanguage(tag);
+        movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 

@@ -27,4 +27,7 @@ public interface MovieRepository extends CrudRepository<Movie, String> {
     @Query(value = "select m from Movie m where m.releaseTime like %?1%")
     List<Movie> findMoviesByReleaseTime(String year);
 
+    @Query(value = "select m from Movie m where m.movieLanguage like %?1%")
+    List<Movie> findMoviesByMovieLanguage(String language);
+
 }

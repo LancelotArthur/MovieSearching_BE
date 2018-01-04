@@ -10,10 +10,14 @@ public interface MovieService {
 
     ResJsonTemplate findReviewsOfMovie(String movie);
 
-    ResJsonTemplate searchMovieByKeyword(String keyword);
+    ResJsonTemplate searchMovieByKeyword(String keyword, String sort);
 
-    ResJsonTemplate searchMovieByGenre(String genre);
+    ResJsonTemplate searchMovieByGenre(String genre, String sort);
 
-    ResJsonTemplate searchMovieByYear(String tag);
+    ResJsonTemplate searchMovieByYear(String tag, String sort);
+
+    ResJsonTemplate searchMovieByMonth(String tag, String sort);
+
+    ResJsonTemplate searchMovieByLanguage(String tag, String sort);
 
 }
