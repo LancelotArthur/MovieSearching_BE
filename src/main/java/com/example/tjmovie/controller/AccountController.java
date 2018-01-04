@@ -72,12 +72,12 @@ public class AccountController {
     @RequestMapping(value = "/users/{userId}/reviews", method = RequestMethod.GET)
     public ResJsonTemplate getReview(@PathVariable String userId){return accountService.findReview(userId);}
 
-    @RequestMapping(value = "/users/{userId}/wish")
+    @RequestMapping(value = "/users/{userId}/wish", method = RequestMethod.GET)
     public ResJsonTemplate getWishList(@PathVariable String userId){
         return accountService.findWishList(userId);
     }
 
-    @RequestMapping(value = "/wishList/addition")
+    @RequestMapping(value = "/wishList/addition", method = RequestMethod.GET)
     @Authorization
     public ResJsonTemplate addWish(
             @CurrentUser Account account,
@@ -85,7 +85,7 @@ public class AccountController {
         return accountService.addWish(account, movieId);
     }
 
-    @RequestMapping(value = "/wishList/delete")
+    @RequestMapping(value = "/wishList/delete", method = RequestMethod.POST)
     @Authorization
     public ResJsonTemplate deleteWish(
             @CurrentUser Account account,
@@ -93,12 +93,12 @@ public class AccountController {
         return accountService.deleteWish(account, movieId);
     }
 
-    @RequestMapping(value = "/users/{userId}/seen")
+    @RequestMapping(value = "/users/{userId}/seen", method = RequestMethod.GET)
     public ResJsonTemplate getSeenList(@PathVariable String userId){
         return accountService.findSeenList(userId);
     }
 
-    @RequestMapping(value = "/seenList/addition")
+    @RequestMapping(value = "/seenList/addition", method = RequestMethod.POST)
     @Authorization
     public ResJsonTemplate addSeen(
             @CurrentUser Account account,
@@ -106,7 +106,7 @@ public class AccountController {
         return accountService.addSeen(account, movieId);
     }
 
-    @RequestMapping(value = "/seenList/delete")
+    @RequestMapping(value = "/seenList/delete", method = RequestMethod.POST)
     @Authorization
     public ResJsonTemplate deleteSeen(
             @CurrentUser Account account,

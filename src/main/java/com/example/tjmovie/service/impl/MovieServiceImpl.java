@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.IdentityHashMap;
-import java.util.List;
+
+import java.util.*;
 
 @Service
 @Transactional
@@ -93,7 +92,45 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public ResJsonTemplate searchMovieByKeyword(String keyword){
-        return new ResJsonTemplate<>("200", "TBD");
+        List<List<Movie>> movieLists = new ArrayList<>();
+        for(int i = 0; i < keyword.length(); ++i)
+        {
+            movieLists.add(movieRepository.findMoviesByMovieName(keyword.charAt(i)));
+        }
+        HashMap<Movie, Integer> hp = new HashMap<>();
+        for (List<Movie> ms : movieLists) {
+            for (Movie m : ms){
+                if (!hp.containsKey(m)){
+                    hp.put(m, 1);
+                }
+                else{
+                    Integer t = hp.get(m);
+                    t = t + 1;
+                    hp.put(m, t);
+                }
+            }
+        }
+        int total = hp.size() >= 10 ? 10 : hp.size();
+        int i = 0;
+        List<Movie> movies = new ArrayList<>();
+        //Integer[] integers = new Integer[hp.size()];
+        //hp.values().toArray(integers);
+        //Arrays.sort(integers);
+        List<Map.Entry<Movie,Integer>> list = new ArrayList<>(hp.entrySet());
+        Collections.sort(list,new Comparator<Map.Entry<Movie,Integer>>() {
+            //降序排序
+            public int compare(Map.Entry<Movie,Integer> o1, Map.Entry<Movie,Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
+        });
+        for (Map.Entry<Movie, Integer> me : list){
+            movies.add(me.getKey());
+            ++i;
+            if (i >= total) {
+                break;
+            }
+        }
+        return new ResJsonTemplate<>("200", movies);
     }
 
     @Override
@@ -103,8 +140,16 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public ResJsonTemplate searchMovieByYear(int startYear, int endYear){
-        return new ResJsonTemplate<>("200", "TBD");
+    public ResJsonTemplate searchMovieByYear(String tag){
+        int startYear = Integer.parseInt(tag.split("-")[0]);
+        int endYear = Integer.parseInt(tag.split("-")[1]);
+        List<Movie> movies = new ArrayList<>();
+        if (startYear <= endYear) {
+            for (int i = startYear; i <= endYear; ++i){
+                movies.addAll(movieRepository.findMoviesByReleaseTime(String.valueOf(i)));
+            }
+        }
+        return new ResJsonTemplate<>("200", movies);
     }
 
 }

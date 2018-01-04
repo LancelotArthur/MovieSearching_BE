@@ -34,8 +34,15 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/explore", method = RequestMethod.GET)
-    public ResJsonTemplate exploreMovie(@RequestParam String tag){
-        return movieService.searchMovieByGenre(tag);
+    public ResJsonTemplate exploreMovie(@RequestParam String tag, @RequestParam String type){
+        if (type.equals("genres"))
+            return movieService.searchMovieByGenre(tag);
+        else if (type.equals("keyword"))
+            return movieService.searchMovieByKeyword(tag);
+        else if (type.equals("year"))
+            return movieService.searchMovieByYear(tag);
+        else
+            return new ResJsonTemplate<>("400", "wrong type");
     }
 
 }

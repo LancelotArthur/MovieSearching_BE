@@ -14,6 +14,6 @@ public interface MovieService {
 
     ResJsonTemplate searchMovieByGenre(String genre);
 
-    ResJsonTemplate searchMovieByYear(int startYear, int endYear);
+    ResJsonTemplate searchMovieByYear(String tag);
 
 }
