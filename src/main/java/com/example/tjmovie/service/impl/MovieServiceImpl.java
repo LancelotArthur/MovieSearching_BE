@@ -39,6 +39,8 @@ public class MovieServiceImpl implements MovieService {
 
     private ListSort<Movie> movieListSort = new ListSort<>();
 
+    private ListSort<Review> reviewListSort = new ListSort<>();
+
     @Override
     public ResJsonTemplate findMovie(String movieId){
         Movie movie = movieRepository.findMovieById(movieId);
@@ -189,6 +191,13 @@ public class MovieServiceImpl implements MovieService {
         if (!sort.equals("default"))
             movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
+    }
+
+    @Override
+    public ResJsonTemplate findAllReviews(){
+        List<Review> reviews = reviewRepository.findReviewsByHelpfulnessGreaterThan(5000);
+        reviewListSort.sort(reviews, "getHelpfulness", "desc");
+        return new ResJsonTemplate<>("200", reviews);
     }
 
 }

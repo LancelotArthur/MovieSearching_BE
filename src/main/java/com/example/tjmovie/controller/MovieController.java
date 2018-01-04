@@ -60,4 +60,9 @@ public class MovieController {
         return movieService.findReviewsOfMovie(movieId);
     }
 
+    @RequestMapping(value = "/review", method = RequestMethod.GET)
+    public ResJsonTemplate findAllReviews(){
+        return movieService.findAllReviews();
+    }
+
 }

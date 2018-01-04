@@ -20,4 +20,6 @@ public interface MovieService {
 
     ResJsonTemplate searchMovieByLanguage(String tag, String sort);
 
+    ResJsonTemplate findAllReviews();
+
 }

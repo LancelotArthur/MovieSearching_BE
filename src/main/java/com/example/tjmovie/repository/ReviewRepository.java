@@ -23,5 +23,7 @@ public interface ReviewRepository extends CrudRepository<Review, String> {
 
     List<Review> findReviewsByMovieId(String movieId);
 
+    List<Review> findReviewsByHelpfulnessGreaterThan(int i);
+
 
 }
