@@ -13,14 +13,10 @@ import java.util.Date;
 public class Review {
 
     @Id
-    @Column(unique = true)
     private String movieId;
-
     @Id
-    @Column(unique = true)
     private String userId;
 
-    @Column(unique = true)
     private String userName;
 
     private int helpfulness;

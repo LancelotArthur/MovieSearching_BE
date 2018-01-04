@@ -133,14 +133,16 @@ public class MovieServiceImpl implements MovieService {
                 break;
             }
         }
-        movieListSort.sort(movies, "get" + sort, "desc");
+        if (!sort.equals("default"))
+            movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
     @Override
     public ResJsonTemplate searchMovieByGenre(String genre, String sort){
         List<Movie> movies = movieRepository.findMoviesByGenres(genre);
-        movieListSort.sort(movies, "get" + sort, "desc");
+        if (!sort.equals("default"))
+            movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
@@ -160,7 +162,8 @@ public class MovieServiceImpl implements MovieService {
                 return m2.getRate() - m1.getRate() > 0 ? 1 : m2.getRate() - m1.getRate() == 0 ? 0 : -1;
             }
         });*/
-        movieListSort.sort(movies, "get" + sort, "desc");
+        if (!sort.equals("default"))
+            movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
@@ -175,14 +178,16 @@ public class MovieServiceImpl implements MovieService {
                 movies.addAll(movieRepository.findMoviesByReleaseTime(year + "-" + String.valueOf(i)));
             }
         }
-        movieListSort.sort(movies, "get" + sort, "desc");
+        if (!sort.equals("default"))
+            movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 
     @Override
     public ResJsonTemplate searchMovieByLanguage(String tag, String sort){
         List<Movie> movies = movieRepository.findMoviesByMovieLanguage(tag);
-        movieListSort.sort(movies, "get" + sort, "desc");
+        if (!sort.equals("default"))
+            movieListSort.sort(movies, "get" + sort, "desc");
         return new ResJsonTemplate<>("200", movies);
     }
 

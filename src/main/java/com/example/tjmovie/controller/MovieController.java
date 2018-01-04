@@ -50,4 +50,9 @@ public class MovieController {
             return new ResJsonTemplate<>("200", "no type");
     }
 
+    @RequestMapping(value = "/movie/{movieId}/review", method = RequestMethod.GET)
+    public ResJsonTemplate findReviewsOfMovie(@PathVariable String movieId){
+        return movieService.findReviewsOfMovie(movieId);
+    }
+
 }

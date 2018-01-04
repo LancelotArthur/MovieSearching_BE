@@ -8,7 +8,7 @@ public interface MovieService {
 
     ResJsonTemplate findCelebritiesOfMovie(String movieId);
 
-    ResJsonTemplate findReviewsOfMovie(String movie);
+    ResJsonTemplate findReviewsOfMovie(String movieId);
 
     ResJsonTemplate searchMovieByKeyword(String keyword, String sort);
 
