@@ -28,9 +28,14 @@ public class MovieController {
         return movieService.findCelebritiesOfMovie(movieId);
     }
 
-    @RequestMapping(value = "/celebrity/{cbId}")
+    @RequestMapping(value = "/celebrity/{cbId}", method = RequestMethod.GET)
     public ResJsonTemplate getCelebrity(@PathVariable String cbId){
         return celebrityService.findCelebrity(cbId);
+    }
+
+    @RequestMapping(value = "/celebrity/{cbId}/movie", method = RequestMethod.GET)
+    public ResJsonTemplate getMoviesOfCelebrity(@PathVariable String cbId){
+        return celebrityService.findMoviesOfCelebrity(cbId);
     }
 
     @RequestMapping(value = "/explore", method = RequestMethod.GET)

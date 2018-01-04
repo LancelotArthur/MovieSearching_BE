@@ -38,7 +38,7 @@ public class CelebrityServiceImpl implements CelebrityService {
 
 
     @Override
-    public ResJsonTemplate findCelebrity(String cbId){
+    public ResJsonTemplate findMoviesOfCelebrity(String cbId){
         boolean isActor, isWriter, isDirector, isProducer;
         List<Actor> actorList;
         List<Writer> writerList;
@@ -86,6 +86,12 @@ public class CelebrityServiceImpl implements CelebrityService {
         }
 
         return new ResJsonTemplate<>("200", takepart);
+    }
+
+    @Override
+    public ResJsonTemplate findCelebrity(String cbId){
+        Celebrity celebrity = celebrityRepository.findCelebrityById(cbId);
+        return new ResJsonTemplate<>("200", celebrity);
     }
 
 }
