@@ -69,6 +69,12 @@ public class AccountController {
         return accountService.deleteReview(account, movieId);
     }
 
+
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    public ResJsonTemplate getAccount(@PathVariable String userId){
+        return accountService.getAccount(userId);
+    }
+
     @RequestMapping(value = "/users/{userId}/reviews", method = RequestMethod.GET)
     public ResJsonTemplate getReview(@PathVariable String userId){return accountService.findReview(userId);}
 

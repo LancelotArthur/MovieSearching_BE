@@ -74,6 +74,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public ResJsonTemplate getAccount(String userId){
+        return new ResJsonTemplate<>("200", accountRepository.findByUserName(userId));
+    }
+
+    @Override
     public ResJsonTemplate addReview(Account account, String movieId, int score, String text){
         Review review = new Review();
         review.setMovieId(movieId);

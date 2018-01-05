@@ -11,6 +11,8 @@ public interface AccountService {
 
     ResJsonTemplate logout(String userName);
 
+    ResJsonTemplate getAccount(String userId);
+
     ResJsonTemplate addReview(Account account, String movieId, int score, String text);
 
     ResJsonTemplate deleteReview(Account account, String movieId);
