@@ -34,60 +34,113 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public ResJsonTemplate findDVDsByYear(String tag) {
         int year = Integer.parseInt(tag);
+        long startTime = System.currentTimeMillis();
         int i = movieDvdRepository.findMovieDvdsByYear2(year) + movieCdRepository.findMoviecdsByYear2(year);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findDVDsByYearAndMonth(String tag) {
         int year = Integer.parseInt(tag.split("-")[0]);
         int month = Integer.parseInt(tag.split("-")[1]);
+        long startTime = System.currentTimeMillis();
         int i = movieDvdRepository.findMovieDvdsByYearAndMonth(year, month) + movieCdRepository.findMoviecdsByYearAndMonth(year, month);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findDVDsByYearAndSeason(String tag) {
         int year = Integer.parseInt(tag.split("-")[0]);
         int season = Integer.parseInt(tag.split("-")[1]);
+        long startTime = System.currentTimeMillis();
         int i = movieDvdRepository.findMovieDvdsByYearAndSeason(year, season) + movieCdRepository.findMoviecdsByYearAndSeason(year, season);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findDVDsByWeekday(String tag) {
         int weekday = Integer.parseInt(tag);
-        int i = movieDvdRepository.findMovieDvdsByWeekday(weekday);
-        return new ResJsonTemplate<>("200", i);
+        long startTime = System.currentTimeMillis();
+        int i = movieDvdRepository.findMovieDvdsByWeekday(weekday) + movieCdRepository.findMoviecdsByWeekday(weekday);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findBanbensByName(String movie) {
+        long startTime = System.currentTimeMillis();
         int i = movieDvdRepository.findBanbensByName(movie) + movieCdRepository.findBanbensByName(movie);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findMoviesByGenre(String tag) {
+        long startTime = System.currentTimeMillis();
         int i = genreRepository.findMoviesByGenre(tag);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findMoviesByActor(String tag) {
+        long startTime = System.currentTimeMillis();
         int i = actorRepository.findMoviesByActor(tag);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findMoviesByDirector(String tag) {
+        long startTime = System.currentTimeMillis();
         int i = directorRepository.findMoviesByDirector(tag);
-        return new ResJsonTemplate<>("200", i);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        List<Long> longs = new ArrayList<>();
+        longs.add(runTime);
+        longs.add(new Long(i));
+        return new ResJsonTemplate<>("200", longs);
     }
 
     @Override
     public ResJsonTemplate findActorsByDirector(String tag) {
-        List<ActorNumber> actorNumberList = directorRepository.findActorsByDirector(tag);
+        long startTime = System.currentTimeMillis();
+        List<String> actorNumberList = directorRepository.findActorsByDirector(tag);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        //actorNumberList.add(new ActorNumber("xxx", new Long(runTime).intValue(), "xxx"));
+        actorNumberList.add("time : " + runTime);
         return new ResJsonTemplate<>("200", actorNumberList);
     }
 }
