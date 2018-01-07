@@ -1,9 +1,9 @@
 package com.example.tjmovie.service.impl;
 
-import com.example.tjmovie.entity.*;
-import com.example.tjmovie.repository.*;
+import com.example.tjmovie.dto.ActorNumber;
+import com.example.tjmovie.mysqlentity.MovieDvd;
+import com.example.tjmovie.mysqlrepository.*;
 import com.example.tjmovie.service.MovieService;
-import com.example.tjmovie.util.ListSort;
 import com.example.tjmovie.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,187 +17,77 @@ import java.util.*;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
-    private CelebrityRepository celebrityRepository;
+    private MovieDvdRepository movieDvdRepository;
+
+    @Autowired
+    private MovieCdRepository movieCdRepository;
+
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Autowired
     private ActorRepository actorRepository;
 
     @Autowired
-    private WriterRepository writerRepository;
-
-    @Autowired
-    private ProducerRepository producerRepository;
-
-    @Autowired
     private DirectorRepository directorRepository;
 
-    @Autowired
-    private MovieRepository movieRepository;
-
-    @Autowired
-    private ReviewRepository reviewRepository;
-
-    private ListSort<Movie> movieListSort = new ListSort<>();
-
-    private ListSort<Review> reviewListSort = new ListSort<>();
-
     @Override
-    public ResJsonTemplate findMovie(String movieId){
-        Movie movie = movieRepository.findMovieById(movieId);
-        if (movie == null)
-            return new ResJsonTemplate<>("503", "找不到资源");
-        return new ResJsonTemplate<>("200", movie);
+    public ResJsonTemplate findDVDsByYear(String tag) {
+        int year = Integer.parseInt(tag);
+        int i = movieDvdRepository.findMovieDvdsByYear2(year) + movieCdRepository.findMoviecdsByYear2(year);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate findCelebritiesOfMovie(String movieId){
-        IdentityHashMap<String, List> celebrities = new IdentityHashMap<>();
-        List<Actor> actors = actorRepository.findActorsByMovieId(movieId);
-        List<Director> directors = directorRepository.findDirectorsByMovieId(movieId);
-        List<Producer> producers = producerRepository.findProducersByMovieId(movieId);
-        List<Writer> writers = writerRepository.findWritersByMovieId(movieId);
-        List<Celebrity> ac = new ArrayList<>();
-        List<Celebrity> dc = new ArrayList<>();
-        List<Celebrity> pc = new ArrayList<>();
-        List<Celebrity> wc = new ArrayList<>();
-
-        if (!actors.isEmpty()){
-            for (Actor a : actors){
-                ac.add(celebrityRepository.findCelebrityById(a.getCbId()));
-            }
-            celebrities.put("Actors", ac);
-        }
-        if (!directors.isEmpty()){
-            for (Director d : directors){
-                dc.add(celebrityRepository.findCelebrityById(d.getCbId()));
-            }
-            celebrities.put("Directors", dc);
-        }
-        if (!producers.isEmpty()){
-            for (Producer p : producers){
-                pc.add(celebrityRepository.findCelebrityById(p.getCbId()));
-            }
-            celebrities.put("Producers", pc);
-        }
-        if (!writers.isEmpty()){
-            for (Writer w : writers){
-                wc.add(celebrityRepository.findCelebrityById(w.getCbId()));
-            }
-            celebrities.put("Writers", wc);
-        }
-
-        return new ResJsonTemplate<>("200", celebrities);
+    public ResJsonTemplate findDVDsByYearAndMonth(String tag) {
+        int year = Integer.parseInt(tag.split("-")[0]);
+        int month = Integer.parseInt(tag.split("-")[1]);
+        int i = movieDvdRepository.findMovieDvdsByYearAndMonth(year, month) + movieCdRepository.findMoviecdsByYearAndMonth(year, month);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate findReviewsOfMovie(String movieId){
-        List<Review> reviews = reviewRepository.findReviewsByMovieId(movieId);
-        return new ResJsonTemplate<>("200", reviews);
+    public ResJsonTemplate findDVDsByYearAndSeason(String tag) {
+        int year = Integer.parseInt(tag.split("-")[0]);
+        int season = Integer.parseInt(tag.split("-")[1]);
+        int i = movieDvdRepository.findMovieDvdsByYearAndSeason(year, season) + movieCdRepository.findMoviecdsByYearAndSeason(year, season);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByKeyword(String keyword, String sort){
-        List<List<Movie>> movieLists = new ArrayList<>();
-        for(int i = 0; i < keyword.length(); ++i)
-        {
-            movieLists.add(movieRepository.findMoviesByMovieName(keyword.charAt(i)));
-        }
-        HashMap<Movie, Integer> hp = new HashMap<>();
-        for (List<Movie> ms : movieLists) {
-            for (Movie m : ms){
-                if (!hp.containsKey(m)){
-                    hp.put(m, 1);
-                }
-                else{
-                    Integer t = hp.get(m);
-                    t = t + 1;
-                    hp.put(m, t);
-                }
-            }
-        }
-        int total = hp.size() >= 10 ? 10 : hp.size();
-        int i = 0;
-        List<Movie> movies = new ArrayList<>();
-        //Integer[] integers = new Integer[hp.size()];
-        //hp.values().toArray(integers);
-        //Arrays.sort(integers);
-        List<Map.Entry<Movie,Integer>> list = new ArrayList<>(hp.entrySet());
-        Collections.sort(list,new Comparator<Map.Entry<Movie,Integer>>() {
-            //降序排序
-            public int compare(Map.Entry<Movie,Integer> o1, Map.Entry<Movie,Integer> o2) {
-                return o2.getValue().compareTo(o1.getValue());
-            }
-        });
-        for (Map.Entry<Movie, Integer> me : list){
-            movies.add(me.getKey());
-            ++i;
-            if (i >= total) {
-                break;
-            }
-        }
-        if (!sort.equals("default"))
-            movieListSort.sort(movies, "get" + sort, "desc");
-        return new ResJsonTemplate<>("200", movies);
+    public ResJsonTemplate findDVDsByWeekday(String tag) {
+        int weekday = Integer.parseInt(tag);
+        int i = movieDvdRepository.findMovieDvdsByWeekday(weekday);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByGenre(String genre, String sort){
-        List<Movie> movies = movieRepository.findMoviesByGenres(genre);
-        if (!sort.equals("default"))
-            movieListSort.sort(movies, "get" + sort, "desc");
-        return new ResJsonTemplate<>("200", movies);
+    public ResJsonTemplate findBanbensByName(String movie) {
+        int i = movieDvdRepository.findBanbensByName(movie) + movieCdRepository.findBanbensByName(movie);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByYear(String tag, String sort){
-        int startYear = Integer.parseInt(tag.split("-")[0]);
-        int endYear = Integer.parseInt(tag.split("-")[1]);
-        List<Movie> movies = new ArrayList<>();
-        if (startYear <= endYear) {
-            for (int i = startYear; i <= endYear; ++i){
-                movies.addAll(movieRepository.findMoviesByReleaseTime(String.valueOf(i)));
-            }
-        }
-        /*
-        Collections.sort(movies, new Comparator<Movie>(){
-            public int compare(Movie m1, Movie m2){
-                return m2.getRate() - m1.getRate() > 0 ? 1 : m2.getRate() - m1.getRate() == 0 ? 0 : -1;
-            }
-        });*/
-        if (!sort.equals("default"))
-            movieListSort.sort(movies, "get" + sort, "desc");
-        return new ResJsonTemplate<>("200", movies);
+    public ResJsonTemplate findMoviesByGenre(String tag) {
+        int i = genreRepository.findMoviesByGenre(tag);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByMonth(String tag, String sort){
-        String year = tag.split("-")[0];
-        int startMonth = Integer.parseInt(tag.split("-")[1]);
-        int endMonth = Integer.parseInt(tag.split("-")[2]);
-        List<Movie> movies = new ArrayList<>();
-        if (startMonth <= endMonth) {
-            for (int i = startMonth; i <= endMonth; ++i){
-                movies.addAll(movieRepository.findMoviesByReleaseTime(year + "-" + String.valueOf(i)));
-            }
-        }
-        if (!sort.equals("default"))
-            movieListSort.sort(movies, "get" + sort, "desc");
-        return new ResJsonTemplate<>("200", movies);
+    public ResJsonTemplate findMoviesByActor(String tag) {
+        int i = actorRepository.findMoviesByActor(tag);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate searchMovieByLanguage(String tag, String sort){
-        List<Movie> movies = movieRepository.findMoviesByMovieLanguage(tag);
-        if (!sort.equals("default"))
-            movieListSort.sort(movies, "get" + sort, "desc");
-        return new ResJsonTemplate<>("200", movies);
+    public ResJsonTemplate findMoviesByDirector(String tag) {
+        int i = directorRepository.findMoviesByDirector(tag);
+        return new ResJsonTemplate<>("200", i);
     }
 
     @Override
-    public ResJsonTemplate findAllReviews(){
-        List<Review> reviews = reviewRepository.findReviewsByHelpfulnessGreaterThan(5000);
-        reviewListSort.sort(reviews, "getHelpfulness", "desc");
-        return new ResJsonTemplate<>("200", reviews);
+    public ResJsonTemplate findActorsByDirector(String tag) {
+        List<ActorNumber> actorNumberList = directorRepository.findActorsByDirector(tag);
+        return new ResJsonTemplate<>("200", actorNumberList);
     }
-
 }

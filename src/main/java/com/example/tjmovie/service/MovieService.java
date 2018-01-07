@@ -4,22 +4,22 @@ import com.example.tjmovie.util.ResJsonTemplate;
 
 public interface MovieService {
 
-    ResJsonTemplate findMovie(String movieId);
+    ResJsonTemplate findDVDsByYear(String tag);
 
-    ResJsonTemplate findCelebritiesOfMovie(String movieId);
+    ResJsonTemplate findDVDsByYearAndMonth(String tag);
 
-    ResJsonTemplate findReviewsOfMovie(String movieId);
+    ResJsonTemplate findDVDsByYearAndSeason(String tag);
 
-    ResJsonTemplate searchMovieByKeyword(String keyword, String sort);
+    ResJsonTemplate findDVDsByWeekday(String tag);
 
-    ResJsonTemplate searchMovieByGenre(String genre, String sort);
+    ResJsonTemplate findBanbensByName(String tag);
 
-    ResJsonTemplate searchMovieByYear(String tag, String sort);
+    ResJsonTemplate findMoviesByGenre(String tag);
 
-    ResJsonTemplate searchMovieByMonth(String tag, String sort);
+    ResJsonTemplate findMoviesByActor(String tag);
 
-    ResJsonTemplate searchMovieByLanguage(String tag, String sort);
+    ResJsonTemplate findMoviesByDirector(String tag);
 
-    ResJsonTemplate findAllReviews();
+    ResJsonTemplate findActorsByDirector(String tag);
 
 }

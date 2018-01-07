@@ -1,11 +1,11 @@
 package com.example.tjmovie.controller;
 
 
-import com.example.tjmovie.service.CelebrityService;
 import com.example.tjmovie.service.MovieService;
 import com.example.tjmovie.util.ResJsonTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,54 +15,21 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private CelebrityService celebrityService;
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public ResJsonTemplate findMovieDVDsByYear(@RequestParam String tag, @RequestParam String type){
+        switch (type){
+            case "year": return movieService.findDVDsByYear(tag);
+            case "month": return movieService.findDVDsByYearAndMonth(tag);
+            case "weekday": return movieService.findDVDsByWeekday(tag);
+            case "season": return movieService.findDVDsByYearAndSeason(tag);
+            case "banben": return movieService.findBanbensByName(tag);
+            case "genre" : return movieService.findMoviesByGenre(tag);
+            case "actor" : return movieService.findMoviesByActor(tag);
+            case "director" : return movieService.findMoviesByDirector(tag);
+            case "actor-director" : return movieService.findActorsByDirector(tag);
+            case "default": break;
+        }
 
-    @RequestMapping(value = "/movie/{movieId}", method = RequestMethod.GET)
-    public ResJsonTemplate getMovie(@PathVariable String movieId){
-        return movieService.findMovie(movieId);
+        return null;
     }
-
-    @RequestMapping(value = "/movie/{movieId}/celebrity", method = RequestMethod.GET)
-    public ResJsonTemplate getCelebrityOfMovie(@PathVariable String movieId){
-        return movieService.findCelebritiesOfMovie(movieId);
-    }
-
-    @RequestMapping(value = "/celebrity/{cbId}", method = RequestMethod.GET)
-    public ResJsonTemplate getCelebrity(@PathVariable String cbId){
-        return celebrityService.findCelebrity(cbId);
-    }
-
-    @RequestMapping(value = "/celebrity/{cbId}/movie", method = RequestMethod.GET)
-    public ResJsonTemplate getMoviesOfCelebrity(@PathVariable String cbId){
-        return celebrityService.findMoviesOfCelebrity(cbId);
-    }
-
-    @RequestMapping(value = "/explore", method = RequestMethod.GET)
-    public ResJsonTemplate exploreMovie(@RequestParam String tag, @RequestParam String type,
-                                        @RequestParam String sort){
-        if (type.equals("genres"))
-            return movieService.searchMovieByGenre(tag, sort);
-        else if (type.equals("keyword"))
-            return movieService.searchMovieByKeyword(tag, sort);
-        else if (type.equals("year"))
-            return movieService.searchMovieByYear(tag, sort);
-        else if (type.equals("month"))
-            return movieService.searchMovieByMonth(tag, sort);
-        else if (type.equals("language"))
-            return movieService.searchMovieByLanguage(tag, sort);
-        else
-            return new ResJsonTemplate<>("200", "no type");
-    }
-
-    @RequestMapping(value = "/movie/{movieId}/review", method = RequestMethod.GET)
-    public ResJsonTemplate findReviewsOfMovie(@PathVariable String movieId){
-        return movieService.findReviewsOfMovie(movieId);
-    }
-
-    @RequestMapping(value = "/review", method = RequestMethod.GET)
-    public ResJsonTemplate findAllReviews(){
-        return movieService.findAllReviews();
-    }
-
 }
