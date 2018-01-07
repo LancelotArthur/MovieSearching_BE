@@ -22,7 +22,7 @@ public class Neo4jServiceImpl implements Neo4jService{
         try {
             Class.forName("org.neo4j.jdbc.Driver");
             // Connect
-            Connection con = DriverManager.getConnection("jdbc:neo4j://localhost:7474/","neo4j", "admin");
+            Connection con = DriverManager.getConnection("jdbc:neo4j:http://localhost:7474/","neo4j", "admin");
             String sql = "MATCH (actor:actor)-[act:act]->(movie:movie)<-[direct:direct]-(director{director: \"" + tag + "\"})\n" +
                     "RETURN actor, COUNT(actor) as actorNumber;";
             Statement stmt = con.createStatement();
@@ -47,7 +47,7 @@ public class Neo4jServiceImpl implements Neo4jService{
         try {
             Class.forName("org.neo4j.jdbc.Driver");
             // Connect
-            Connection con = DriverManager.getConnection("jdbc:neo4j://localhost:7474/","neo4j", "admin");
+            Connection con = DriverManager.getConnection("jdbc:neo4j:http://localhost:7474/","neo4j", "admin");
             String sql = "MATCH (actor{actor:\"" + tag + "\"})-[act:act]->(movie:movie)" +
                     "RETURN COUNT (movie) as movieNumber;";
             Statement stmt = con.createStatement();
@@ -72,7 +72,7 @@ public class Neo4jServiceImpl implements Neo4jService{
         try {
             Class.forName("org.neo4j.jdbc.Driver");
             // Connect
-            Connection con = DriverManager.getConnection("jdbc:neo4j://localhost:7474/","neo4j", "admin");
+            Connection con = DriverManager.getConnection("jdbc:neo4j:http://localhost:7474/","neo4j", "admin");
             String sql = "MATCH (director{director:\"" + tag + "\"})-[direct:direct]->(movie:movie)" +
                     "RETURN COUNT(movie) as movieNumber;";
             Statement stmt = con.createStatement();
